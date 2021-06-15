@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "css-loader": "^5.2.6",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "vue-loader": "^15.9.7",
     "vue-style-loader": "^4.1.3",

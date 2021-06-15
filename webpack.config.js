@@ -13,6 +13,13 @@ module.exports = {
         test: /\.scss$/,
         use: ['vue-style-loader', 'css-loader', 'sass-loader'],
       },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]?[hash]',
+        },
+      },
     ],
   },
   plugins: [
