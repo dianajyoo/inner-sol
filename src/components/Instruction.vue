@@ -31,6 +31,8 @@
 
     p {
       flex-basis: 65%;
+      text-align: left;
+      line-height: 1.33;
     }
 
     button {
