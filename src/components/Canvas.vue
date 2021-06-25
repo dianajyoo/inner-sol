@@ -20,10 +20,12 @@
   100% { box-shadow: 0 0 10px #7fce31; }
 }
 
-canvas {
+#canvas {
   width: 300px;
   margin: 1.5rem auto 0 auto;
   animation: pulse 4s infinite;
+  background-color: $white;
+  z-index: 100;
 
   @media (min-width: $med) {
     margin-top: 4rem;

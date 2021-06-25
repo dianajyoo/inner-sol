@@ -4,10 +4,7 @@
       <img :src="logo" alt="Logo" class="logo" />
     </div>
     <Canvas :currentColor="currentColor" />
-    <DrawingTool
-      :currentColor="currentColor"
-      :updateColor="updateColor"
-    />
+    <DrawingTool :currentColor="currentColor" :updateColor="updateColor" />
     <Instruction />
   </div>
 </template>
@@ -92,6 +89,13 @@ h1 {
     text-align: center;
   }
 }
+
+#shapes {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
 </style>
 
 <script>
@@ -99,6 +103,8 @@ import Canvas from './components/Canvas.vue';
 import DrawingTool from './components/DrawingTool.vue';
 import Instruction from './components/Instruction.vue';
 import logo from './assets/images/logo.svg';
+
+import shapes from './data/shapes';
 
 export default {
   data() {
@@ -116,11 +122,72 @@ export default {
       return logo;
     },
   },
+  mounted() {
+    this.initiateThreeJS();
+  },
   methods: {
     updateColor(e) {
       if (e.target.tagName === 'BUTTON') {
         this.currentColor = `${e.target.dataset.hex}`;
       }
+    },
+    initiateThreeJS() {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      const colors = {
+        white: '#fff',
+      };
+
+      let clock = new THREE.Clock();
+      let time = 0;
+      let delta = 0;
+
+      scene.background = new THREE.Color(colors.white);
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+      renderer.domElement.id = 'shapes'; // canvas el
+
+      const sphere = new THREE.Mesh(
+        shapes.sphere.geometry,
+        shapes.sphere.material
+      );
+      const torus = new THREE.Mesh(
+        shapes.torus.geometry,
+        shapes.torus.material
+      );
+
+      sphere.translateX(-1);
+      torus.translateX(4);
+      torus.translateY(3);
+
+      camera.position.z = 6;
+
+      document.body.appendChild(renderer.domElement);
+
+      renderer.setAnimationLoop(() => {
+        torus.rotation.x += 0.01;
+        torus.rotation.y += 0.01;
+
+        // Bouncing ball~
+        // https://stackoverflow.com/questions/51429502/how-to-create-simple-vertical-bounce-animation-to-a-sphere
+        delta = clock.getDelta();
+        time += delta;
+        sphere.rotation.x = time * 4;
+        sphere.position.y = 0.5 + Math.abs(Math.sin(time * 3)) * 2;
+        sphere.position.z = Math.cos(time) * 4;
+
+        renderer.render(scene, camera);
+      });
+
+      scene.add(sphere);
+      scene.add(torus);
     }
   }
 };
