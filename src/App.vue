@@ -41,6 +41,10 @@ html {
   margin: 0;
 }
 
+canvas {
+  cursor: url('assets/images/paintbrush.png'), auto;
+}
+
 p {
   margin: 0;
   line-height: 1.2;
@@ -103,6 +107,9 @@ import Canvas from './components/Canvas.vue';
 import DrawingTool from './components/DrawingTool.vue';
 import Instruction from './components/Instruction.vue';
 import logo from './assets/images/logo.svg';
+import sphereSkin from './assets/images/markus-spiske-k0rVudBoB4c-unsplash.jpg';
+import torusSkin from './assets/images/sharon-mccutcheon-ShhuLsZREvM-unsplash.jpg';
+// import torusSkin from './assets/images/lucas-benjamin-wQLAGv4_OYs-unsplash.jpg';
 
 import shapes from './data/shapes';
 
@@ -155,12 +162,20 @@ export default {
       renderer.domElement.id = 'shapes'; // canvas el
 
       const sphere = new THREE.Mesh(
-        shapes.sphere.geometry,
-        shapes.sphere.material
+        shapes().sphere.geometry,
+        shapes(
+          new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load(sphereSkin),
+          })
+        ).sphere.material
       );
       const torus = new THREE.Mesh(
-        shapes.torus.geometry,
-        shapes.torus.material
+        shapes().torus.geometry,
+        shapes(
+          new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load(torusSkin),
+          })
+        ).torus.material
       );
 
       sphere.translateX(-1);
@@ -188,7 +203,7 @@ export default {
 
       scene.add(sphere);
       scene.add(torus);
-    }
-  }
+    },
+  },
 };
 </script>
