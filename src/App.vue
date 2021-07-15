@@ -39,6 +39,13 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+  background-size: 50px 50px;
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
 }
 
 canvas {
@@ -103,21 +110,21 @@ h1 {
 </style>
 
 <script>
-import Canvas from './components/Canvas.vue';
-import DrawingTool from './components/DrawingTool.vue';
-import Instruction from './components/Instruction.vue';
-import logo from './assets/images/logo.svg';
-import sphereSkin from './assets/images/markus-spiske-k0rVudBoB4c-unsplash.jpg';
-import torusSkin from './assets/images/sharon-mccutcheon-ShhuLsZREvM-unsplash.jpg';
+import Canvas from './components/Canvas.vue'
+import DrawingTool from './components/DrawingTool.vue'
+import Instruction from './components/Instruction.vue'
+import logo from './assets/images/logo.svg'
+import sphereSkin from './assets/images/markus-spiske-k0rVudBoB4c-unsplash.jpg'
+import torusSkin from './assets/images/sharon-mccutcheon-ShhuLsZREvM-unsplash.jpg'
 // import torusSkin from './assets/images/lucas-benjamin-wQLAGv4_OYs-unsplash.jpg';
 
-import shapes from './data/shapes';
+import shapes from './data/shapes'
 
 export default {
   data() {
     return {
       currentColor: '000',
-    };
+    }
   },
   components: {
     Canvas,
@@ -126,40 +133,40 @@ export default {
   },
   computed: {
     logo() {
-      return logo;
+      return logo
     },
   },
   mounted() {
-    this.initiateThreeJS();
+    this.initiateThreeJS()
   },
   methods: {
     updateColor(e) {
       if (e.target.tagName === 'BUTTON') {
-        this.currentColor = `${e.target.dataset.hex}`;
+        this.currentColor = `${e.target.dataset.hex}`
       }
     },
     initiateThreeJS() {
-      const scene = new THREE.Scene();
+      const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(
         75,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
-      );
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      )
+      const renderer = new THREE.WebGLRenderer({ antialias: true })
       const colors = {
         white: '#fff',
-      };
+      }
 
-      let clock = new THREE.Clock();
-      let time = 0;
-      let delta = 0;
+      let clock = new THREE.Clock()
+      let time = 0
+      let delta = 0
 
-      scene.background = new THREE.Color(colors.white);
+      scene.background = new THREE.Color(colors.white)
 
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-      renderer.domElement.id = 'shapes'; // canvas el
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      document.body.appendChild(renderer.domElement)
+      renderer.domElement.id = 'shapes' // canvas el
 
       const sphere = new THREE.Mesh(
         shapes().sphere.geometry,
@@ -168,7 +175,7 @@ export default {
             map: new THREE.TextureLoader().load(sphereSkin),
           })
         ).sphere.material
-      );
+      )
       const torus = new THREE.Mesh(
         shapes().torus.geometry,
         shapes(
@@ -176,34 +183,34 @@ export default {
             map: new THREE.TextureLoader().load(torusSkin),
           })
         ).torus.material
-      );
+      )
 
-      sphere.translateX(-1);
-      torus.translateX(4);
-      torus.translateY(3);
+      sphere.translateX(-1)
+      torus.translateX(4)
+      torus.translateY(3)
 
-      camera.position.z = 6;
+      camera.position.z = 6
 
-      document.body.appendChild(renderer.domElement);
+      document.body.appendChild(renderer.domElement)
 
       renderer.setAnimationLoop(() => {
-        torus.rotation.x += 0.01;
-        torus.rotation.y += 0.01;
+        torus.rotation.x += 0.01
+        torus.rotation.y += 0.01
 
         // Bouncing ball~
         // https://stackoverflow.com/questions/51429502/how-to-create-simple-vertical-bounce-animation-to-a-sphere
-        delta = clock.getDelta();
-        time += delta;
-        sphere.rotation.x = time * 4;
-        sphere.position.y = 0.5 + Math.abs(Math.sin(time * 3)) * 2;
-        sphere.position.z = Math.cos(time) * 4;
+        delta = clock.getDelta()
+        time += delta
+        sphere.rotation.x = time * 4
+        sphere.position.y = 0.5 + Math.abs(Math.sin(time * 3)) * 2
+        sphere.position.z = Math.cos(time) * 4
 
-        renderer.render(scene, camera);
-      });
+        renderer.render(scene, camera)
+      })
 
-      scene.add(sphere);
-      scene.add(torus);
+      scene.add(sphere)
+      scene.add(torus)
     },
   },
-};
+}
 </script>

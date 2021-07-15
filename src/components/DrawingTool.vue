@@ -33,14 +33,14 @@
       content: '';
       width: 2rem;
       height: 2rem;
-      background: url('../assets/images/star.svg') center / contain no-repeat;
+      background: url('../assets/images/brush.svg') center / contain no-repeat;
       font-size: 1.5rem;
       display: block;
       transition: filter 0.1s ease;
     }
 
     &.active {
-      animation: spin 4s linear infinite;
+      // animation: spin 4s linear infinite;
     }
 
     &.red:before {
